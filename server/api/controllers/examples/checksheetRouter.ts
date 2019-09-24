@@ -68,6 +68,9 @@ export default express
    */
   .patch('/checksheets/:id', checksheetController.patch)
 
+  //TODO write swagger definition for this route
+  .put('/checksheets/:id', checksheetController.put)
+
   /*
    * DELETE
    */

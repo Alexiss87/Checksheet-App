@@ -6,7 +6,8 @@ import * as errors from '../../common/errors';
 import Checksheet, { IChecksheet } from '../models/checksheet';
 import l from '../../common/logger';
 import check, { ICheck } from '../models/check';
-import comment from '../models/comment';
+import comment, { IComment } from '../models/comment';
+import checksheet from '../models/checksheet';
 
 export class ChecksheetService {
   async all(): Promise<IChecksheet[]> {
@@ -27,7 +28,7 @@ export class ChecksheetService {
 
     if (!mongooseTypes.ObjectId.isValid(id)) {
       let e = new Error(`The id: ${id} is not a vaild id `);
-      throw new errors.HttpError(HttpStatus.BAD_REQUEST,e);
+      throw new errors.HttpError(HttpStatus.BAD_REQUEST, e);
     }
 
     const doc = (await Checksheet.findOne({ _id: id })
@@ -36,7 +37,11 @@ export class ChecksheetService {
       .populate('comments')
       .exec()) as IChecksheet;
 
-    if (!doc) throw new errors.HttpError(HttpStatus.NOT_FOUND, Error(`The checksheet with id: ${id} was not found `));
+    if (!doc)
+      throw new errors.HttpError(
+        HttpStatus.NOT_FOUND,
+        Error(`The checksheet with id: ${id} was not found `)
+      );
 
     return doc;
   }
@@ -75,10 +80,25 @@ export class ChecksheetService {
     return doc;
   }
 
-  async patch(id: string, checksheetData: IChecksheet): Promise<IChecksheet> {
-    // L.info(`update checksheet with id ${id} with data ${checksheetData}`);
+  async patch(
+    id: string,
+    checksheetData: IChecksheet
+  ): Promise<any> /** : Promise<IChecksheet>*/ {
+    l.info('THE PATCH UPDATE HIT');
+    l.debug('CHECKSHEET OBJECT', checksheetData);
 
-    // created and casted and array of checks to Icheck from request object
+    // let error = new Error();
+    // error ={
+    //   message: 'Umplimented toute'
+    // }
+    let error = new Error('Umplimented route');
+    //return error;
+
+    throw new errors.HttpError(HttpStatus.BAD_REQUEST, error);
+  }
+  async put(id: string, checksheetData: IChecksheet): Promise<IChecksheet> {
+    l.info('THE PUT UPDATE HIT');
+    l.debug('CHECKSHEET OBJECT', checksheetData);
 
     let checks: Array<ICheck> = [];
     for (var chck in checksheetData.checks) {
@@ -86,10 +106,9 @@ export class ChecksheetService {
     }
     l.info(`Checks: ${checks}`);
 
-    //same as checks above
+    //same as checks above in the post method
     let comments = [];
     for (var com in checksheetData.comments) {
-      l.debug(`coment: ${com}`);
       comments.push(await new comment(checksheetData.comments[com]).save());
     }
 
@@ -123,7 +142,6 @@ export class ChecksheetService {
       //new errors.HttpError(HttpStatus.NOT_FOUND);
     }
   }
-
   async remove(id: string): Promise<void> {
     L.info(`delete checksheet with id ${id}`);
 

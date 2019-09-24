@@ -28,7 +28,6 @@ export class Controller {
         next(error);
       }
     } catch (err) {
-      
       //l.error(err);
       return next(err);
     }
@@ -52,6 +51,17 @@ export class Controller {
           message: err.message
         });
       }
+      return next(err);
+    }
+  }
+  async put(req: Request, res: Response, next: NextFunction) {
+    try {
+      const doc = await ChecksheetService.put(req.params.id, req.body);
+      return res
+        .status(HttpStatus.OK)
+        .location(`/api/v1/checksheet/${doc._id}`)
+        .json(doc);
+    } catch (err) {
       return next(err);
     }
   }

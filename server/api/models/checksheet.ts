@@ -36,7 +36,7 @@ const checksheetSchema = new Schema({
 // Always attach `populate()` to `find()` calls
 checksheetSchema.pre('find', function() {
   this.populate('check');
-  //this.populate('comment');
+  this.populate('comment');
 });
 
 export default mongoose.model<IChecksheet>('Checksheet', checksheetSchema);
