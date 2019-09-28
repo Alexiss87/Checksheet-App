@@ -10,11 +10,28 @@ import comment, { IComment } from '../models/comment';
 import checksheet from '../models/checksheet';
 
 export class ChecksheetService {
-  async all(): Promise<IChecksheet[]> {
+  async all(query?: object): Promise<IChecksheet[]> {
     L.info('fetch all checksheets');
+    l.info(`QUERY: ${query}`);
+    if (query === null || query === undefined) query = {};
+    //TODO Fix querry, it returns an empty array
+    // const filter = Checksheet.find({ ...query }, 'supervisor machineName');
 
-    const docs = (await Checksheet.find()
-      //.sort({ createdAt: 'asc' })
+    // l.debug(`Filter: ${filter}`);
+
+    // const docss = await filter.exec();
+    // l.debug(`DOCSS: ${docss}`);
+    // let docs = docss as IChecksheet[];
+
+    const docs = (await Checksheet.find(
+      { ...query },
+      'supervisor machineName completedBy',
+      {
+        strictQuery: 'throw'
+      }
+    )
+
+      //.sort({ completedBy: 'desc' })
       //.lean()
       .populate('checks')
       .populate('comments', { text: true })
@@ -86,15 +103,7 @@ export class ChecksheetService {
   ): Promise<any> /** : Promise<IChecksheet>*/ {
     l.info('THE PATCH UPDATE HIT');
     l.debug('CHECKSHEET OBJECT', checksheetData);
-
-    // let error = new Error();
-    // error ={
-    //   message: 'Umplimented toute'
-    // }
-    let error = new Error('Umplimented route');
-    //return error;
-
-    throw new errors.HttpError(HttpStatus.BAD_REQUEST, error);
+    throw new errors.HttpError(HttpStatus.NOT_IMPLEMENTED);
   }
   async put(id: string, checksheetData: IChecksheet): Promise<IChecksheet> {
     l.info('THE PUT UPDATE HIT');

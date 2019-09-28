@@ -6,8 +6,17 @@ import l from '../../../common/logger';
 
 export class Controller {
   async all(req: Request, res: Response, next: NextFunction) {
-    try {
-      const docs = await ChecksheetService.all();
+    try {      
+      for (const key in req.query) {
+        l.info(key, req.query[key]);
+      }
+
+      var url = require('url');
+      var url_parts = url.parse(req.url, true);
+      var query = url_parts.query;
+      l.info(query);
+
+      const docs = await ChecksheetService.all({ ...query });
       return res.status(HttpStatus.OK).json(docs);
     } catch (err) {
       return next(err);

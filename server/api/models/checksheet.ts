@@ -39,4 +39,9 @@ checksheetSchema.pre('find', function() {
   this.populate('comment');
 });
 
-export default mongoose.model<IChecksheet>('Checksheet', checksheetSchema);
+let collectionName = 'checksheets';
+export default mongoose.model<IChecksheet>(
+  'Checksheet',
+  checksheetSchema,
+  collectionName
+);
