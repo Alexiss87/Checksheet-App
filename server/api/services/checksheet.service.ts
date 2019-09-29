@@ -14,14 +14,6 @@ export class ChecksheetService {
     L.info('fetch all checksheets');
     l.info(`QUERY: ${query}`);
     if (query === null || query === undefined) query = {};
-    //TODO Fix querry, it returns an empty array
-    // const filter = Checksheet.find({ ...query }, 'supervisor machineName');
-
-    // l.debug(`Filter: ${filter}`);
-
-    // const docss = await filter.exec();
-    // l.debug(`DOCSS: ${docss}`);
-    // let docs = docss as IChecksheet[];
 
     const docs = (await Checksheet.find(
       { ...query },
@@ -30,11 +22,10 @@ export class ChecksheetService {
         strictQuery: 'throw'
       }
     )
-
       //.sort({ completedBy: 'desc' })
       //.lean()
-      .populate('checks')
-      .populate('comments', { text: true })
+      //.populate('checks')
+      //.populate('comments', { text: true })
       .exec()) as IChecksheet[];
 
     return docs;
@@ -64,7 +55,7 @@ export class ChecksheetService {
   }
 
   async create(checksheetData: IChecksheet): Promise<IChecksheet> {
-    L.info(`create checksheet with data ${checksheetData}`);
+    L.info(`create checksheet with dataaa ${checksheetData}`);
     //destructure checkSheetdata dataoject
     let { supervisor, completedBy, machineName } = checksheetData;
 

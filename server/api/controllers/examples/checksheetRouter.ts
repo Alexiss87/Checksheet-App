@@ -1,5 +1,7 @@
 import express from 'express';
 import checksheetController from './checksheet.controller';
+const SchemaValidator = require('../../middleware/schemaValidator');
+const validateRequest = SchemaValidator(true);
 
 export default express
   /**
@@ -25,7 +27,7 @@ export default express
    * @param {date} date - The date created...for now
    * @returns {Checksheet} 201 - successfully created comment
    */
-  .post('/checksheet', checksheetController.create)
+  .post('/checksheet', validateRequest, checksheetController.create)
 
   /*
    * GET
@@ -66,10 +68,10 @@ export default express
    * @returns {Error}  404 - The checksheet with id: *** was not found
    * @returns {Error} 500 - Internal server error
    */
-  .patch('/checksheets/:id', checksheetController.patch)
+  .patch('/checksheets/:id', validateRequest, checksheetController.patch)
 
   //TODO write swagger definition for this route
-  .put('/checksheets/:id', checksheetController.put)
+  .put('/checksheets/:id', validateRequest, checksheetController.put)
 
   /*
    * DELETE

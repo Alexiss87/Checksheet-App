@@ -21,7 +21,7 @@ const checkSchema = new Schema({
   status: {
     type: String,
     default: 'ok',
-    enum: ['ok', 'Not ok', 'Job raised ']
+    enum: ['ok', 'not ok', 'job raised ']
   },
   valueRecorded: String,
   date: {

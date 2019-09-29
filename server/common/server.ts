@@ -13,7 +13,7 @@ import * as HttpStatus from 'http-status-codes';
 import { NextFunction } from 'connect';
 const errorHandler = require('../api/controllers/error');
 const cors = require('cors');
-
+const expressSanitized = require('express-sanitized-escaped');
 const app = express();
 const mongoose = new Mongoose();
 const expressSwagger = require('express-swagger-generator')(app);
@@ -43,6 +43,7 @@ export default class ExpressServer {
     app.use(bodyParser.json());
     //app.use(express.json());
     app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(expressSanitized.middleware()); // this line follows app.use(bodyParser.json) or the last body parser middleware
     app.use(cookieParser(process.env.SESSION_SECRET));
     app.use(express.static(`${root}/public`));
     app.use(cors());
