@@ -48,5 +48,6 @@ const checkSheetDataSchema = joi.object().keys({
 
 // export the schemas
 module.exports = {
-  '/checksheet': checkSheetDataSchema
+  '/checksheet': checkSheetDataSchema,
+  '/checksheets/:id': checkSheetDataSchema
 };

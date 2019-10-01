@@ -23,9 +23,9 @@ export class ChecksheetService {
       }
     )
       //.sort({ completedBy: 'desc' })
-      //.lean()
-      //.populate('checks')
-      //.populate('comments', { text: true })
+      .lean()
+      .populate('checks')
+      .populate('comments', { text: true })
       .exec()) as IChecksheet[];
 
     return docs;
@@ -87,16 +87,55 @@ export class ChecksheetService {
 
     return doc;
   }
-
-  async patch(
-    id: string,
-    checksheetData: IChecksheet
-  ): Promise<any> /** : Promise<IChecksheet>*/ {
+//TODO fix patch update 
+  async patch(id: string, checksheetData: IChecksheet): Promise<IChecksheet> {
     l.info('THE PATCH UPDATE HIT');
     l.debug('CHECKSHEET OBJECT', checksheetData);
     throw new errors.HttpError(HttpStatus.NOT_IMPLEMENTED);
+
+    // let checks: Array<ICheck> = [];
+    // for (var chck in checksheetData.checks) {
+    //   checks.push(await new check(checksheetData.checks[chck]).save());
+    // }
+    // l.info(`Checks: ${checks}`);
+
+    // //same as checks above in the post method
+    // let comments = [];
+    // for (var com in checksheetData.comments) {
+    //   comments.push(await new comment(checksheetData.comments[com]).save());
+    // }
+
+    // let { supervisor, completedBy, machineName } = checksheetData;
+
+    // const updatedChecksheet = {
+    //   supervisor,
+    //   completedBy,
+    //   machineName,
+    //   checks,
+    //   comments
+    // };
+
+    // L.info(`update checksheet with id ${id} with data ${checksheetData}`);
+
+    // try {
+    //   const doc = (await Checksheet.update(
+    //     { _id: id },
+    //     { $set: checksheetData },
+    //     { new: true }
+    //   )
+    //     .populate('checks')
+    //     .populate('comments')
+    //     .exec()) as IChecksheet;
+    //   //if (!doc) throw new errors.HttpError(HttpStatus.NOT_FOUND);
+    //   return doc;
+    // } catch (error) {
+    //   l.error(error);
+
+    //   throw new errors.HttpError(HttpStatus.BAD_REQUEST, error);
+    //   //new errors.HttpError(HttpStatus.NOT_FOUND);
+    // }
   }
-  async put(id: string, checksheetData: IChecksheet): Promise<IChecksheet> {
+  async update(id: string, checksheetData: IChecksheet): Promise<IChecksheet> {
     l.info('THE PUT UPDATE HIT');
     l.debug('CHECKSHEET OBJECT', checksheetData);
 

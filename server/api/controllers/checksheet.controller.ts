@@ -1,8 +1,8 @@
-import ChecksheetService from '../../services/checksheet.service';
+import ChecksheetService from '../services/checksheet.service';
 import { Request, Response, NextFunction } from 'express';
 import * as HttpStatus from 'http-status-codes';
-import * as errors from '../../../common/errors';
-import l from '../../../common/logger';
+import * as errors from '../../common/errors';
+import l from '../../common/logger';
 import _ from 'lodash';
 
 export class Controller {
@@ -60,9 +60,9 @@ export class Controller {
       return next(err);
     }
   }
-  async put(req: Request, res: Response, next: NextFunction) {
+  async update(req: Request, res: Response, next: NextFunction) {
     try {
-      const doc = await ChecksheetService.put(req.params.id, req.body);
+      const doc = await ChecksheetService.update(req.params.id, req.body);
       return res
         .status(HttpStatus.OK)
         .location(`/api/v1/checksheet/${doc._id}`)

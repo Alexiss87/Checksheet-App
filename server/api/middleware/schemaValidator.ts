@@ -40,7 +40,7 @@ module.exports = (useJoiError = false) => {
             req.body,
             _schema,
             _validationOptions
-          );          
+          );
           // Replace req.body with the data after Joi validation
           req.body = result;
           l.info('PASSED VALIDATION');
@@ -52,7 +52,7 @@ module.exports = (useJoiError = false) => {
           res.status(422).json({ error: message });
         }
       }
-    } else {      
+    } else {
       l.info('Validation skipped');
       next();
     }

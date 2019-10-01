@@ -1,6 +1,6 @@
 import express from 'express';
 import checksheetController from './checksheet.controller';
-const SchemaValidator = require('../../middleware/schemaValidator');
+const SchemaValidator = require('../middleware/schemaValidator');
 const validateRequest = SchemaValidator(true);
 
 export default express
@@ -71,7 +71,7 @@ export default express
   .patch('/checksheets/:id', validateRequest, checksheetController.patch)
 
   //TODO write swagger definition for this route
-  .put('/checksheets/:id', validateRequest, checksheetController.put)
+  .put('/checksheets/:id', validateRequest, checksheetController.update)
 
   /*
    * DELETE
