@@ -9,6 +9,7 @@
     NavLink
   } from "sveltestrap";
   import { link } from "svelte-routing";
+  import Links from "../constants/Links";
 
   let isOpen = false;
 
@@ -24,13 +25,13 @@
   <NavbarToggler on:click={() => (isOpen = !isOpen)} />
   <Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
     <Nav class="ml-auto" navbar>
-      <NavItem>
-        <!-- <NavLink href="/">Home</NavLink> -->
-        <a href="/" use:link class="nav-link active">Home</a>
-      </NavItem>
-      <NavItem>
-        <a href="/about" class="nav-link" use:link>About</a>
-      </NavItem>
+      {#each Links as navLink}
+        <!-- content here -->
+        <NavItem>
+        <!-- TODO active link -->
+          <a href={navLink.url} use:link class="nav-link active">{navLink.text}</a>
+        </NavItem>
+      {/each}      
     </Nav>
   </Collapse>
 </Navbar>
