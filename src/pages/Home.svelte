@@ -1,6 +1,6 @@
 <script>
   export let location;
-  console.log(location);
+  //console.log(location);
 </script>
 
 <h1>Home page</h1>

@@ -16,7 +16,7 @@
   function handleUpdate(event) {
     isOpen = event.detail.isOpen;
   }
-  console.log(window.location.href);
+  //console.log(window.location.href);
 </script>
 
 <Navbar color="primary" dark expand="md">
@@ -28,10 +28,12 @@
       {#each Links as navLink}
         <!-- content here -->
         <NavItem>
-        <!-- TODO active link -->
-          <a href={navLink.url} use:link class="nav-link active">{navLink.text}</a>
+          <!-- TODO active link -->
+          <a href={navLink.url} use:link class="nav-link active">
+            {navLink.text}
+          </a>
         </NavItem>
-      {/each}      
+      {/each}
     </Nav>
   </Collapse>
 </Navbar>
