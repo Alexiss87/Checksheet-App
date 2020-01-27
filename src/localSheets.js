@@ -3,10 +3,12 @@ export default [
     id: 1,
     title: 'Monthly Boiler PM Checksheet',
     machine_name: 'Boiler',
-    technician_name: '',
-    supervisor: '',
-    date: new Date(2019, 11, 24, 14, 31),
-    start_time: '',
+    // technician_name: 'A.Brown',
+    // supervisor: 'A.Simpson',
+    // date: new Date(2019, 11, 24, 14, 31),
+    // start_time: '',
+    // completion_time:'',
+    WO_number: '',
 
     checks: [
       {
@@ -63,6 +65,11 @@ export default [
       {
         id: 1,
         date: new Date(2019, 11, 24, 13, 31),
+        machine_name: 'Boiler',
+        technician_name: 'A.Brown',
+        supervisor: 'A.Simpson',
+        start_time: '',
+        completion_time: '',
         responses: [
           {
             check_id: 1,
@@ -116,8 +123,13 @@ export default [
         ]
       },
       {
-        id: 1,
+        id: 2,
         date: new Date(2019, 11, 30, 16, 31),
+        machine_name: 'Boiler',
+        technician_name: 'A.Brown',
+        supervisor: 'A.Simpson',
+        start_time: '',
+        completion_time: '',
         responses: [
           {
             check_id: 1,
@@ -176,10 +188,11 @@ export default [
     id: 2,
     title: 'Bi-weekly Batch Mixer PM Checksheet',
     machine_name: 'Batch Mixer',
-    technician_name: '',
-    supervisor: '',
-    date: new Date(2019, 11, 24, 13, 11),
-    start_time: '',
+    // technician_name: '',
+    // supervisor: '',
+    //date: new Date(2019, 11, 24, 13, 11),
+    //start_time: '',
+    WO_number: '002',
 
     checks: [
       {
@@ -236,6 +249,11 @@ export default [
       {
         id: 1,
         date: new Date(2019, 11, 24, 13, 11),
+        machine_name: 'Boiler',
+        technician_name: 'A.Brown',
+        supervisor: 'A.Simpson',
+        start_time: '',
+        completion_time: '',
         responses: [
           {
             title: 'Inspect safety switch',
