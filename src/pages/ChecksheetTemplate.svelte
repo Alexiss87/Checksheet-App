@@ -9,11 +9,27 @@
   let limit = 10;
 </script>
 
+<style>
+  #table {
+    text-align: left;
+    position: relative;
+  }
+  th {
+    position: sticky;
+    top: 0;
+  }
+</style>
+
 <h1>Historical data for the {sheet.title}`</h1>
 <!-- <h2>{sheet.machine_name}</h2> -->
 <a href="/checksheets" use:link class="btn btn-primary">back to checksheets</a>
 
-<Table bordered responsive striped>
+<Table
+  style="position:relative;text-align: left;"
+  bordered
+  responsive
+  striped
+  class="table-sm">
   <thead>
     <tr>
       <th />
@@ -91,6 +107,7 @@
       {/each}
     </tr>
   </thead>
+
   <tbody>
     {#each sheet.checks as check (check.id)}
       <tr>

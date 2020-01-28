@@ -13,32 +13,39 @@
   let time_taken = calculateTimetaken();
   let date = "";
 
+  let statusOptions = [
+    { id: "1", value: "Unchecked" },
+    { id: "2", value: "Ok" },
+    { id: "3", value: "Not Ok" }
+  ];
+
   let sheet = localSheets.find(item => item.id === parseInt(id));
 
   let response = {};
-  let responses = [];
+  let responses = sheet.checks.map((check, index) => {
+    return {
+      check_id: index + 1,
+      title: sheet.checks[index].title,
+      status: "Unchecked",
+      value: null
+    };
+  });
+  console.log(responses);
 
   function calculateTimetaken() {
     return start_time - completion_time;
   }
-  // id: 1,
-  //       date: new Date(2019, 11, 24, 13, 31),
-  //       machine_name: 'Boiler',
-  //       technician_name: 'A.Brown',
-  //       supervisor: 'A.Simpson',
-  //       start_time: '',
-  //       completion_time: '',
   function handleSubmit(e) {
     e.preventDefault();
     console.log(sheet.response.length);
-    let checks = responses.map((response, index) => {
-      return {
-        check_id: index + 1,
-        title: sheet.checks[index].title,
-        status: response,
-        value: null
-      };
-    });
+    // let checks = responses.map((response, index) => {
+    //   return {
+    //     check_id: index + 1,
+    //     title: sheet.checks[index].title,
+    //     status: response,
+    //     value: null
+    //   };
+    // });
     response = {
       id: sheet.response.length + 1,
       machine_name: sheet.machine_name,
@@ -46,122 +53,115 @@
       supervisor: supervisor,
       start_time: start_time,
       completion_time: completion_time,
-      responses: [...checks]
+      responses: [...responses]
     };
-    console.log(checks);
+    console.log(responses);
     console.log(response);
   }
 </script>
 
-<h1>Perform checks</h1>
+<style>
+
+</style>
+
+<p />
 <a href="/checksheets" use:link class="btn btn-primary">back to checksheets</a>
 <h1>{sheet.title}</h1>
 
-<Container />
 <Form>
-  <Row>
-    <FormGroup inline check>
-      <Col xs="6">
-        <Label for="supervisor">Supervisor</Label>
-      </Col>
-      <Col xs="6">
-        <Input
-          type="text"
-          name="supervisor"
-          id="supervisor"
-          bind:value={supervisor}
-          readonly={false} />
-      </Col>
 
-    </FormGroup>
-  </Row>
-  <Row>
-    <FormGroup inline check>
-      <Col xs="6">
-        <Label for="technician">Technician</Label>
-      </Col>
-      <Col xs="6">
-        <Input
-          type="text"
-          name="Technician"
-          id="technician"
-          bind:value={technician}
-          readonly={false} />
-      </Col>
-    </FormGroup>
-  </Row>
+  <FormGroup inline>
+    <Col sm="4">
+      <Label for="supervisor">Supervisor</Label>
+    </Col>
+    <Col sm="12">
+      <Input
+        type="text"
+        name="supervisor"
+        id="supervisor"
+        bind:value={supervisor}
+        readonly={false} />
+    </Col>
 
-  <Row>
-    <FormGroup inline check>
-      <Col xs="6">
-        <Label for="start_time">Start time</Label>
-      </Col>
-      <Col xs="6">
-        <Input
-          type="time"
-          name="start_time"
-          id="start_time"
-          bind:value={start_time}
-          readonly={false} />
-      </Col>
-    </FormGroup>
-  </Row>
+  </FormGroup>
 
-  <Row>
-    <FormGroup inline check>
-      <Col xs="6">
-        <Label for="completion_time">Completion time</Label>
-      </Col>
-      <Col sm="10">
-        <Input
-          type="time"
-          name="completion_time"
-          id="completion_time"
-          bind:value={completion_time}
-          readonly={false} />
-      </Col>
-    </FormGroup>
-  </Row>
-  <Row>
-    <FormGroup inline check>
-      <Col xs="6">
-        <Label for="time_taken">Time Taken</Label>
-      </Col>
-      <Col xs="6">
-        <Input
-          disabled
-          type="time"
-          name="time_taken"
-          id="time_taken"
-          bind:value={time_taken}
-          readonly={true} />
-      </Col>
-    </FormGroup>
-  </Row>
-  <Row>
-    <FormGroup inline check>
-      <Col xs="6">
-        <Label for="date">Date</Label>
-      </Col>
-      <Col xs="6">
-        <Input
-          type="date"
-          name="date"
-          id="date"
-          bind:value={date}
-          readonly={false} />
-      </Col>
-    </FormGroup>
-  </Row>
-  <Button type="submit" color={'primary'} on:click={handleSubmit}>
-    submit
-  </Button>
+  <FormGroup inline>
+    <Col sm="4">
+      <Label for="technician">Technician</Label>
+    </Col>
+    <Col sm="12">
+      <Input
+        type="text"
+        name="Technician"
+        id="technician"
+        bind:value={technician}
+        readonly={false} />
+    </Col>
+  </FormGroup>
+
+  <FormGroup inline>
+    <Col sm="4">
+      <Label for="start_time" class="text-nowrap">Start time</Label>
+    </Col>
+    <Col sm="12">
+      <Input
+        type="time"
+        name="start_time"
+        id="start_time"
+        bind:value={start_time}
+        readonly={false} />
+    </Col>
+  </FormGroup>
+
+  <FormGroup inline>
+    <Col sm="4">
+      <Label for="completion_time" class="text-nowrap">Completion time</Label>
+    </Col>
+    <Col sm="12">
+      <Input
+        type="time"
+        name="completion_time"
+        id="completion_time"
+        bind:value={completion_time}
+        readonly={false} />
+    </Col>
+  </FormGroup>
+
+  <!-- <FormGroup inline>
+    <Col sm="3">
+      <Label for="time_taken" class="text-nowrap">Time Taken</Label>
+    </Col>
+    <Col sm="12">
+      <Input
+        disabled
+        type="time"
+        name="time_taken"
+        id="time_taken"
+        bind:value={time_taken}
+        readonly={true} />
+    </Col>
+  </FormGroup> -->
+
+  <FormGroup inline>
+    <Col sm="4">
+      <Label for="date">Date</Label>
+    </Col>
+    <Col sm="12">
+      <Input
+        type="date"
+        name="date"
+        id="date"
+        bind:value={date}
+        readonly={false} />
+    </Col>
+  </FormGroup>
+
 </Form>
 
-<Table bordered responsive striped>
+<Table bordered responsive striped class="table-sm">
   <thead>
     <tr>
-      <th>item No.</th>
+      <th />
       <th>Checks</th>
       <th>status</th>
     </tr>
@@ -173,15 +173,31 @@
         <th scope="row">{check.id}</th>
         <td>{check.title}</td>
         <td>
-          <Input
+          <!-- <Input
             type="text"
             name={check.title}
             id={check.title}
             readonly={false}
-            bind:value={responses[check.id - 1]} />
+            bind:value={responses[check.id - 1]} /> -->
+          <select
+            type="select"
+            name={check.title}
+            id={check.title}
+            bind:value={responses[check.id - 1].status}
+            readonly={false}
+            class="custom-select">
+            {#each statusOptions as option}
+              <option value={option.value} selected={option.value}>
+                {option.value}
+              </option>
+            {/each}
+          </select>
         </td>
       </tr>
     {/each}
   </tbody>
 
 </Table>
+<Button type="submit" color={'primary'} block on:click={handleSubmit}>
+  submit
+</Button>
