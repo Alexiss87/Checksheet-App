@@ -35,9 +35,7 @@
       <th />
       <th>Supervisor:</th>
       {#each sheet.response as response, i}
-        <!-- content here -->
         {#if i < limit - 1}
-          <!-- content here -->
           <td>{response.supervisor}</td>
         {/if}
       {/each}
@@ -46,9 +44,7 @@
       <th />
       <th>Technician Name:</th>
       {#each sheet.response as response, i}
-        <!-- content here -->
         {#if i < limit - 1}
-          <!-- content here -->
           <td>{response.technician_name}</td>
         {/if}
       {/each}
@@ -57,10 +53,8 @@
       <th />
       <th>Start Time:</th>
       {#each sheet.response as response, i}
-        <!-- content here -->
         {#if i < limit - 1}
-          <!-- content here -->
-          <td>{response.date}</td>
+          <td>{response.date.toLocaleTimeString()}</td>
         {/if}
       {/each}
     </tr>
@@ -68,9 +62,7 @@
       <th />
       <th>Completion Time:</th>
       {#each sheet.response as response, i}
-        <!-- content here -->
         {#if i < limit - 1}
-          <!-- content here -->
           <td>1 hour</td>
         {/if}
       {/each}
@@ -79,9 +71,7 @@
       <th />
       <th>WO Number:</th>
       {#each sheet.response as response, i}
-        <!-- content here -->
         {#if i < limit - 1}
-          <!-- content here -->
           <td>{response.id}</td>
         {/if}
       {/each}
@@ -94,15 +84,14 @@
       <th scope="row" />
     </tr>
   </thead>
+
   <thead>
     <tr>
       <th>item No.</th>
       <th>Checks</th>
       {#each sheet.response as response, i}
-        <!-- content here -->
         {#if i < limit - 1}
-          <!-- content here -->
-          <th>{response.date}</th>
+          <th>{response.date.toDateString()}</th>
         {/if}
       {/each}
     </tr>
@@ -116,10 +105,8 @@
         {#each response as date, i}
           <!-- {console.log(check.id)} -->
           {#if date.responses[check.id - 1].value === null}
-            <!-- content here -->
             <td>{date.responses[check.id - 1].status}</td>
           {:else}
-            <!-- else content here -->
             <td>{date.responses[check.id - 1].value}</td>
           {/if}
         {/each}
