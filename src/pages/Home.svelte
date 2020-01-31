@@ -70,6 +70,8 @@
   $: overdueSheets = $sheets.filter(sheet => {
     //select last response of the sheet then check if it's overdue
     // if it's overdue return it
+    // The code below is the same as:
+    //return isOverdue(sheet.response.slice(-1)[0].date, sheet) ? sheet : '';
     return isOverdue(sheet.response.slice(-1)[0].date, sheet) && sheet;
   });
   $: console.log(overdueSheets);
