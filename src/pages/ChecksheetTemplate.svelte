@@ -1,19 +1,21 @@
 <script>
-  import localSheets from "../localSheets.js";
+  //import localSheets from "../localSheets.js";
+  import sheets from "../stores/checksheets";
   import { link } from "svelte-routing";
   import { Table } from "sveltestrap";
 
   export let id;
-  let sheet = localSheets.find(item => item.id === parseInt(id));
-  let response = sheet.response;
+  //let sheet = localSheets.find(item => item.id === parseInt(id));
+  $: sheet = $sheets.find(item => item.id === parseInt(id));
+  $: response = sheet.response;
   let limit = 10;
 </script>
 
 <style>
-  #table {
+  /* #table {
     text-align: left;
     position: relative;
-  }
+  } */
   th {
     position: sticky;
     top: 0;

@@ -1,8 +1,8 @@
 <script>
   import { link } from "svelte-routing";
-  import localSheets from "../localSheets.js";
+  //import localSheets from "../localSheets.js";
+  import sheets from "../stores/checksheets";
   export let id;
-  //import { Table } from "sveltestrap";
   import { Button, Form, FormGroup, FormText, Input, Label } from "sveltestrap";
   import { Col, Container, Row, Table } from "sveltestrap";
 
@@ -19,10 +19,11 @@
     { id: "3", value: "Not Ok" }
   ];
 
-  let sheet = localSheets.find(item => item.id === parseInt(id));
+  //let sheet = localSheets.find(item => item.id === parseInt(id));
+  $: sheet = $sheets.find(item => item.id === parseInt(id));
 
   let response = {};
-  let responses = sheet.checks.map((check, index) => {
+  $: responses = sheet.checks.map((check, index) => {
     return {
       check_id: index + 1,
       title: sheet.checks[index].title,
@@ -30,7 +31,7 @@
       value: null
     };
   });
-  console.log(responses);
+  $: console.log(responses);
 
   function calculateTimetaken() {
     return start_time - completion_time;

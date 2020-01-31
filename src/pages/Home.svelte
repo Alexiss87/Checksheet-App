@@ -1,8 +1,82 @@
 <script>
   export let location;
-  //console.log(location);
+  // import localSheets from "../localSheets.js";
+  import sheets from "../stores/checksheets";
+  import SheetList from "../components/SheetList.svelte";
+  import moment from "moment";
+
+  function isOverdue(date, sheet = null) {
+    let frequency = [
+      "daily",
+      "weekly",
+      "bi - weekly",
+      "monthly",
+      "quaterly",
+      "bi - annually",
+      "anually"
+    ];
+    let lastResponseDate = moment(date);
+    let dueDate = "";
+    // identify frequency of the sheet then
+    // calculate due date based on frequency
+    // then check if due date has passed the current time/date
+    // if the due date has passed the current date then the sheet is overdue
+    // i.e if the if the current date is after the due date the sheet is overdue
+    if (sheet.frequency == frequency[0]) {
+      //daily sheet check
+      console.log(`Sheet frequency is ${frequency[0]}`);
+      dueDate = lastResponseDate.clone().add(1, "day");
+      console.log(`Is the sheet due: ${moment().isAfter(dueDate)}`);
+      return moment().isAfter(dueDate);
+    } else if (sheet.frequency == frequency[1]) {
+      //weekly sheet check
+      console.log(`Sheet frequency is ${frequency[1]}`);
+      dueDate = lastResponseDate.clone().add(1, "week");
+      console.log(`Is the sheet due: ${moment().isAfter(dueDate)}`);
+      return moment().isAfter(dueDate);
+    } else if (sheet.frequency == frequency[2]) {
+      //bi- weekly sheet check
+      console.log(`Sheet frequency is ${frequency[2]}`);
+      dueDate = lastResponseDate.clone().add(2, "weeks");
+      console.log(`Is the sheet due: ${moment().isAfter(dueDate)}`);
+      return moment().isAfter(dueDate);
+    } else if (sheet.frequency == frequency[3]) {
+      console.log(`Sheet frequency is ${frequency[3]}`);
+      //montlhy sheet check
+      dueDate = lastResponseDate.clone().add(1, "month");
+      console.log(`Is the sheet due: ${moment().isAfter(dueDate)}`);
+      return moment().isAfter(dueDate);
+    } else if (sheet.frequency == frequency[4]) {
+      //quarterly sheet check
+      console.log(`Sheet frequency is ${frequency[4]}`);
+      dueDate = lastResponseDate.clone().add(3, "months");
+      console.log(`Is the sheet due: ${moment().isAfter(dueDate)}`);
+      return moment().isAfter(dueDate);
+    } else if (sheet.frequency == frequency[5]) {
+      //bi-anually sheet check
+      console.log(`Sheet frequency is ${frequency[5]}`);
+      dueDate = lastResponseDate.clone().add(6, "months");
+      console.log(`Is the sheet due: ${moment().isAfter(dueDate)}`);
+      return moment().isAfter(dueDate);
+    } else if (sheet.frequency == frequency[6]) {
+      //yearly sheet check
+      console.log(`Sheet frequency is ${frequency[6]}`);
+      dueDate = lastResponseDate.clone().add(12, "months");
+      console.log(`Is the sheet due: ${moment().isAfter(dueDate)}`);
+      return moment().isAfter(dueDate);
+    }
+  }
+
+  $: overdueSheets = $sheets.filter(sheet => {
+    //select last response of the sheet then check if it's overdue
+    // if it's overdue return it
+    return isOverdue(sheet.response.slice(-1)[0].date, sheet) && sheet;
+  });
+  $: console.log(overdueSheets);
 </script>
 
-<h1>Home page</h1>
-<p>{location.href}</p>
-<p>{location.pathname}</p>
+<h1>Overdue Sheets</h1>
+<SheetList sheets={overdueSheets} />
+<!-- <SheetList sheets={localSheets} /> -->
+<!-- <p>{location.href}</p>
+<p>{location.pathname}</p> -->

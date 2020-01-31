@@ -1,14 +1,24 @@
+let frequency = {
+  0: 'daily',
+  1: 'weekly',
+  2: 'bi - weekly',
+  3: 'monthly',
+  4: 'quaterly',
+  5: 'bi - annually',
+  6: 'anually'
+};
 export default [
   {
     id: 1,
     title: 'Monthly Boiler PM Checksheet',
     machine_name: 'Boiler',
+    WO_number: '',
+    frequency: 'monthly',
     // technician_name: 'A.Brown',
     // supervisor: 'A.Simpson',
     // date: new Date(2019, 11, 24, 14, 31),
     // start_time: '',
     // completion_time:'',
-    WO_number: '',
 
     checks: [
       {
@@ -193,6 +203,7 @@ export default [
     //date: new Date(2019, 11, 24, 13, 11),
     //start_time: '',
     WO_number: '002',
+    frequency: 'bi - weekly',
 
     checks: [
       {
@@ -248,7 +259,7 @@ export default [
     response: [
       {
         id: 1,
-        date: new Date(2019, 11, 24, 13, 11),
+        date: new Date(2020, 1, 24, 13, 11),
         machine_name: 'Boiler',
         technician_name: 'A.Brown',
         supervisor: 'A.Simpson',

@@ -4,7 +4,6 @@
   import { Button } from "sveltestrap";
   export let id = "default id";
   export let title = "defualt title";
-  export let classname = "";
 </script>
 
 <Card class="mx-auto text-center" style="margin-top:10px;">
