@@ -1,13 +1,32 @@
 <script>
   //import localSheets from "../localSheets.js";
-  import sheets from "../stores/checksheets";
+  import checksheets from "../stores/checksheets";
   import { link } from "svelte-routing";
   import { Table } from "sveltestrap";
+  import { getResults } from "../services/services";
+  import { onMount } from "svelte";
 
   export let id;
   //let sheet = localSheets.find(item => item.id === parseInt(id));
-  $: sheet = $sheets.find(item => item.id === parseInt(id));
-  $: response = sheet.response;
+  console.log(id);
+  // $: console.log(checksheets[0].Title);
+  $: sheet = $checksheets.find(item => item.id === parseInt(id));
+  // $: console.log(sheet);
+
+  let results = [];
+  onMount(async () => {
+    results = await getResults(`?checksheet=${id}`);
+    console.log("**********");
+    console.log(results);
+  });
+
+  // $: if (sheet) {
+  //   results = sheet.results;
+  //   console.log(results);
+  // }
+
+  //$: console.log(results);
+  //$: response = sheet.response;
   let limit = 10;
 </script>
 
@@ -22,97 +41,102 @@
   }
 </style>
 
-<h1>Historical data for the {sheet.title}`</h1>
-<!-- <h2>{sheet.machine_name}</h2> -->
-<a href="/checksheets" use:link class="btn btn-primary">back to checksheets</a>
+{#if sheet || sheet != undefined}
+  <h1>Historical data for the {sheet.Title}</h1>
+  <!-- <h2>{sheet.machine_name}</h2> -->
+  <a href="/checksheets" use:link class="btn btn-primary">
+    back to checksheets
+  </a>
 
-<Table
-  style="position:relative;text-align: left;"
-  bordered
-  responsive
-  striped
-  class="table-sm">
-  <thead>
-    <tr>
-      <th />
-      <th>Supervisor:</th>
-      {#each sheet.response as response, i}
-        {#if i < limit - 1}
-          <td>{response.supervisor}</td>
-        {/if}
-      {/each}
-    </tr>
-    <tr>
-      <th />
-      <th>Technician Name:</th>
-      {#each sheet.response as response, i}
-        {#if i < limit - 1}
-          <td>{response.technician_name}</td>
-        {/if}
-      {/each}
-    </tr>
-    <tr>
-      <th />
-      <th>Start Time:</th>
-      {#each sheet.response as response, i}
-        {#if i < limit - 1}
-          <td>{response.date.toLocaleTimeString()}</td>
-        {/if}
-      {/each}
-    </tr>
-    <tr>
-      <th />
-      <th>Completion Time:</th>
-      {#each sheet.response as response, i}
-        {#if i < limit - 1}
-          <td>1 hour</td>
-        {/if}
-      {/each}
-    </tr>
-    <tr>
-      <th />
-      <th>WO Number:</th>
-      {#each sheet.response as response, i}
-        {#if i < limit - 1}
-          <td>{response.id}</td>
-        {/if}
-      {/each}
-    </tr>
-
-    <tr borderless table-primary>
-      <th scope="row" />
-    </tr>
-    <tr borderless>
-      <th scope="row" />
-    </tr>
-  </thead>
-
-  <thead>
-    <tr>
-      <th>item No.</th>
-      <th>Checks</th>
-      {#each sheet.response as response, i}
-        {#if i < limit - 1}
-          <th>{response.date.toDateString()}</th>
-        {/if}
-      {/each}
-    </tr>
-  </thead>
-
-  <tbody>
-    {#each sheet.checks as check (check.id)}
+  <Table
+    style="position:relative;text-align: left;"
+    bordered
+    responsive
+    striped
+    class="table-sm">
+    <thead>
       <tr>
-        <th scope="row">{check.id}</th>
-        <td>{check.title}</td>
-        {#each response as date, i}
-          <!-- {console.log(check.id)} -->
-          {#if date.responses[check.id - 1].value === null}
-            <td>{date.responses[check.id - 1].status}</td>
-          {:else}
-            <td>{date.responses[check.id - 1].value}</td>
+        <th />
+        <th>Supervisor:</th>
+        {#each sheet.results as response, i}
+          {#if i < limit - 1}
+            <td>{response.supervisor}</td>
           {/if}
         {/each}
       </tr>
-    {/each}
-  </tbody>
-</Table>
+      <tr>
+        <th />
+        <th>Technician Name:</th>
+        {#each results as response, i}
+          {#if i < limit - 1}
+            <td>{response.technicain_name}</td>
+          {/if}
+        {/each}
+      </tr>
+      <tr>
+        <th />
+        <th>Start Time:</th>
+        {#each sheet.results as response, i}
+          {#if i < limit - 1}
+            <td>{response.date}</td>
+          {/if}
+        {/each}
+      </tr>
+      <tr>
+        <th />
+        <th>Completion Time:</th>
+        {#each sheet.results as response, i}
+          {#if i < limit - 1}
+            <td>1 hour</td>
+          {/if}
+        {/each}
+      </tr>
+      <tr>
+        <th />
+        <th>WO Number:</th>
+        {#each sheet.results as response, i}
+          {#if i < limit - 1}
+            <td>{response.id}</td>
+          {/if}
+        {/each}
+      </tr>
+
+      <tr borderless table-primary>
+        <th scope="row" />
+      </tr>
+      <tr borderless>
+        <th scope="row" />
+      </tr>
+    </thead>
+
+    <thead>
+      <tr>
+        <th>item No.</th>
+        <th>Checks</th>
+        {#each results as response, i}
+          {#if i < limit - 1}
+            <th>{response.date}</th>
+          {/if}
+        {/each}
+      </tr>
+    </thead>
+
+    <tbody>
+      {#each sheet.checks as check, idx}
+        <tr>
+          <th scope="row">{idx + 1}</th>
+          <td>{check.title}</td>
+          {#each results as result, i}
+            {#if result.answers[idx].value == null}
+              <td>{result.answers[idx].status}</td>
+            {:else}
+              <td>{result.answers[idx].value}</td>
+            {/if}
+          {/each}
+        </tr>
+      {/each}
+    </tbody>
+  </Table>
+{:else}
+  <h1>Loading</h1>
+{/if}

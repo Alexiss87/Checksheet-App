@@ -1,7 +1,7 @@
 <script>
   export let location;
   // import localSheets from "../localSheets.js";
-  import sheets from "../stores/checksheets";
+  import checksheets from "../stores/checksheets";
   import SheetList from "../components/SheetList.svelte";
   import moment from "moment";
 
@@ -67,18 +67,18 @@
     }
   }
 
-  $: overdueSheets = $sheets.filter(sheet => {
-    //select last response of the sheet then check if it's overdue
-    // if it's overdue return it
-    // The code below is the same as:
-    //return isOverdue(sheet.response.slice(-1)[0].date, sheet) ? sheet : '';
-    return isOverdue(sheet.response.slice(-1)[0].date, sheet) && sheet;
-  });
-  $: console.log(overdueSheets);
+  //$: overdueSheets = $checksheets.filter(sheet => {
+  //select last response of the sheet then check if it's overdue
+  // if it's overdue return it
+  // The code below is the same as:
+  //return isOverdue(sheet.response.slice(-1)[0].date, sheet) ? sheet : '';
+  //   return isOverdue(sheet.response.slice(-1)[0].date, sheet) && sheet;
+  // });
+  // $: console.log(overdueSheets);
 </script>
 
 <h1>Overdue Sheets</h1>
-<SheetList sheets={overdueSheets} />
+<SheetList checksheets={$checksheets} />
 <!-- <SheetList sheets={localSheets} /> -->
 <!-- <p>{location.href}</p>
 <p>{location.pathname}</p> -->

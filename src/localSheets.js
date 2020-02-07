@@ -71,7 +71,7 @@ export default [
         value: null
       }
     ],
-    response: [
+    response: [ ///results
       {
         id: 1,
         date: new Date(2019, 11, 24, 13, 31),
@@ -80,7 +80,7 @@ export default [
         supervisor: 'A.Simpson',
         start_time: '',
         completion_time: '',
-        responses: [
+        responses: [ ///answers
           {
             check_id: 1,
             title: 'Inspect Ignition electrode',

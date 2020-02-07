@@ -2,13 +2,15 @@
   import ListItem from "./ListItem.svelte";
   import { Col, Row } from "sveltestrap";
 
-  export let sheets = [];
+  export let checksheets = [];
+
+  //console.log("Sheets:" + checksheets);
 </script>
 
 <Row>
   <Col>
-    {#each sheets as sheet}
-      <ListItem id={sheet.id} title={sheet.title} />
+    {#each checksheets as sheet (sheet.id)}
+      <ListItem id={sheet.id} title={sheet.Title} />
     {/each}
   </Col>
 </Row>
