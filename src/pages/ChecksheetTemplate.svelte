@@ -2,7 +2,7 @@
   //import localSheets from "../localSheets.js";
   import checksheets from "../stores/checksheets";
   import { link } from "svelte-routing";
-  import { Table } from "sveltestrap";
+  import { Table, Spinner } from "sveltestrap";
   import { getResults } from "../services/services";
   import { onMount } from "svelte";
 
@@ -11,13 +11,13 @@
   console.log(id);
   // $: console.log(checksheets[0].Title);
   $: sheet = $checksheets.find(item => item.id === parseInt(id));
-  // $: console.log(sheet);
 
   let results = [];
   onMount(async () => {
     results = await getResults(`?checksheet=${id}`);
     console.log("**********");
     console.log(results);
+    console.log(sheet);
   });
 
   // $: if (sheet) {
@@ -58,7 +58,7 @@
       <tr>
         <th />
         <th>Supervisor:</th>
-        {#each sheet.results as response, i}
+        {#each results as response, i}
           {#if i < limit - 1}
             <td>{response.supervisor}</td>
           {/if}
@@ -76,7 +76,7 @@
       <tr>
         <th />
         <th>Start Time:</th>
-        {#each sheet.results as response, i}
+        {#each results as response, i}
           {#if i < limit - 1}
             <td>{response.date}</td>
           {/if}
@@ -87,7 +87,9 @@
         <th>Completion Time:</th>
         {#each sheet.results as response, i}
           {#if i < limit - 1}
-            <td>1 hour</td>
+            <td>
+              {Math.abs(new Date(response.start_time) - new Date(response.end_time))}
+            </td>
           {/if}
         {/each}
       </tr>
@@ -96,7 +98,7 @@
         <th>WO Number:</th>
         {#each sheet.results as response, i}
           {#if i < limit - 1}
-            <td>{response.id}</td>
+            <td>{`00${response.id}`}</td>
           {/if}
         {/each}
       </tr>
@@ -126,6 +128,7 @@
         <tr>
           <th scope="row">{idx + 1}</th>
           <td>{check.title}</td>
+          <!-- each check has a list/array of results -->
           {#each results as result, i}
             {#if result.answers[idx].value == null}
               <td>{result.answers[idx].status}</td>
@@ -138,5 +141,7 @@
     </tbody>
   </Table>
 {:else}
-  <h1>Loading</h1>
+  <div class="d-flex justify-content-center text-center align-items-center">
+    <Spinner color={'primary'} size={'xl'} />
+  </div>
 {/if}

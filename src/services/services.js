@@ -42,6 +42,7 @@ export const getResults = async (params ='') => {
   }
   return results
 }
+
 export const getResult = async (id) => {
   const response = await fetch(`${url}/results/${id}`)
     .catch(error => {
@@ -72,4 +73,18 @@ export const postResults = async (data) => {
     body: JSON.stringify(data) // body data type must match "Content-Type" header
   });
   return await response.json(); // parses JSON response into native JavaScript objects
+}
+
+export const getChecks = async (params ='') => {
+  const response = await fetch(`${url}/checks${params}`)
+    .catch(error => {
+      console.error(error)
+    })
+  const checks = await response.json()
+
+  if (checks.error) {
+    console.log(checks.error)
+    return null
+  }
+  return checks
 }
