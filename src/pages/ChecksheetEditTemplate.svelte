@@ -2,7 +2,6 @@
   import { link } from "svelte-routing";
   //import localSheets from "../localSheets.js";
   import checksheets from "../stores/checksheets";
-  export let id;
   import {
     Button,
     Form,
@@ -14,14 +13,16 @@
   } from "sveltestrap";
   import { Col, Container, Row, Table } from "sveltestrap";
   import { getChecks } from "../services/services";
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
+  import { postResults } from "../services/services";
 
+  export let id;
   let supervisor = "Alexis";
   let technician = "james";
-  let start_time = "";
-  let completion_time = "";
+  let start_time = "13:59:00";
+  let completion_time = "13:59:00";
   let time_taken = calculateTimetaken();
-  let date = "";
+  let date = "2020-02-14";
 
   let statusOptions = [
     { id: "1", value: "Unchecked" },
@@ -29,7 +30,6 @@
     { id: "3", value: "Not Ok" }
   ];
 
-  //let sheet = localSheets.find(item => item.id === parseInt(id));
   $: sheet = $checksheets.find(item => item.id === parseInt(id));
   let result = {};
   let answers = [];
@@ -51,7 +51,11 @@
         has_value: check.has_value
       };
     });
-    //console.log(answers);
+    console.log(answers);
+  });
+  onDestroy(() => {
+    result = {};
+    answers = [];
   });
 
   function calculateTimetaken() {
@@ -60,25 +64,37 @@
   function handleSubmit(e) {
     e.preventDefault();
     answers.forEach(answer => {
+      console.log(`answer value ${answer.value}`);
       if (answer.value) {
-        answer.status = "Checked";
+        answer.status = "Ok";
       }
+      delete answer["title"];
+      delete answer["has_value"];
     });
     //check: 4, title: "Inspect Panel for loose connection", status: "Unchecked", value: null, has_value: false
     //answers = []
     console.log(answers);
+    console.log(start_time);
     result = {
       // id: responses.length + 1,
-      id: sheet.results.slice(-1)[0].id + 1,
-      machine_name: sheet.machine_name,
+      //id: sheet.results.slice(-1)[0].id + 1,
+      date: date,
+      machine_name: sheet.Equipment,
+      //technician_name: technician,
       technician_name: technician,
       supervisor: supervisor,
-      start_time: start_time,
-      completion_time: completion_time,
+      start_time: `${start_time}:00`,
+      end_time: `${completion_time}:00`,
+      checksheet: sheet.id,
       answers: [...answers]
     };
     //console.log(answers);
     console.log(result);
+    try {
+      postResults(result);
+    } catch (error) {
+      console.log(error);
+    }
   }
 </script>
 
@@ -232,7 +248,7 @@
   </Button>
 {:else}
   <!-- else content here -->
-  <div class="d-flex justify-content-center text-center align-items-center">
-    <Spinner color={'primary'} size={'xl'} />
+  <div class="d-flex justify-content-center text-center align-items-center m-5">
+    <Spinner color={'primary'} style="width: 10rem; height: 10rem;" />
   </div>
 {/if}

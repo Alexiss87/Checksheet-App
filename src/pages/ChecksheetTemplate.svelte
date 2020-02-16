@@ -4,44 +4,39 @@
   import { link } from "svelte-routing";
   import { Table, Spinner } from "sveltestrap";
   import { getResults } from "../services/services";
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
 
   export let id;
-  //let sheet = localSheets.find(item => item.id === parseInt(id));
-  console.log(id);
-  // $: console.log(checksheets[0].Title);
+  let limit = 10;
   $: sheet = $checksheets.find(item => item.id === parseInt(id));
 
   let results = [];
   onMount(async () => {
     results = await getResults(`?checksheet=${id}`);
-    console.log("**********");
+    //console.log("**********");
     console.log(results);
     console.log(sheet);
   });
 
-  // $: if (sheet) {
-  //   results = sheet.results;
-  //   console.log(results);
-  // }
-
-  //$: console.log(results);
-  //$: response = sheet.response;
-  let limit = 10;
+  onDestroy(() => {
+    results = [];
+  });
 </script>
 
 <style>
-  /* #table {
-    text-align: left;
-    position: relative;
-  } */
   th {
     position: sticky;
     top: 0;
   }
+  .flex-center {
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
 </style>
 
 {#if sheet || sheet != undefined}
+  <!-- {#if 1 === 0} -->
   <h1>Historical data for the {sheet.Title}</h1>
   <!-- <h2>{sheet.machine_name}</h2> -->
   <a href="/checksheets" use:link class="btn btn-primary">
@@ -69,7 +64,7 @@
         <th>Technician Name:</th>
         {#each results as response, i}
           {#if i < limit - 1}
-            <td>{response.technicain_name}</td>
+            <td>{response.technician_name}</td>
           {/if}
         {/each}
       </tr>
@@ -130,10 +125,14 @@
           <td>{check.title}</td>
           <!-- each check has a list/array of results -->
           {#each results as result, i}
-            {#if result.answers[idx].value == null}
-              <td>{result.answers[idx].status}</td>
+            {#if result.answers}
+              {#if result.answers[idx].value === undefined || result.answers[idx].value === '' || result.answers[idx].value === null}
+                <td>{idx}:{result.answers[idx].status}</td>
+              {:else}
+                <td>{idx}:{result.answers[idx].value}</td>
+              {/if}
             {:else}
-              <td>{result.answers[idx].value}</td>
+              <td>No ans</td>
             {/if}
           {/each}
         </tr>
@@ -141,7 +140,10 @@
     </tbody>
   </Table>
 {:else}
-  <div class="d-flex justify-content-center text-center align-items-center">
-    <Spinner color={'primary'} size={'xl'} />
+  <div
+    class="d-flex flex-row justify-content-center text-center m-5 flex-center">
+    <Spinner
+      color={'primary'}
+      style="width: 10rem; height: 10rem; text-center" />
   </div>
 {/if}
