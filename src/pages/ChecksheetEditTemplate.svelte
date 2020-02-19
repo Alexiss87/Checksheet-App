@@ -230,9 +230,9 @@
                 <!-- if check has value  -->
                 <Input
                   type="text"
-                  name="value"
+                  name={check.title}
                   bind:value={answers[i].value}
-                  id="value"
+                  id={check.title}
                   readonly={false} />
               {/if}
             {/if}

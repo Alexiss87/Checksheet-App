@@ -127,9 +127,9 @@
           {#each results as result, i}
             {#if result.answers}
               {#if result.answers[idx].value === undefined || result.answers[idx].value === '' || result.answers[idx].value === null}
-                <td>{idx}:{result.answers[idx].status}</td>
+                <td>{result.answers[idx].status}</td>
               {:else}
-                <td>{idx}:{result.answers[idx].value}</td>
+                <td>{result.answers[idx].value}</td>
               {/if}
             {:else}
               <td>No ans</td>
