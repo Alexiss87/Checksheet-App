@@ -1,5 +1,5 @@
 <script>
-  import { link } from "svelte-routing";
+  import { link, navigate } from "svelte-routing";
   //import localSheets from "../localSheets.js";
   import checksheets from "../stores/checksheets";
   import {
@@ -47,7 +47,7 @@
         check: check.id,
         title: check.title,
         status: "Unchecked",
-        value: null,
+        value: '',
         has_value: check.has_value
       };
     });
@@ -61,7 +61,7 @@
   function calculateTimetaken() {
     return start_time - completion_time;
   }
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     answers.forEach(answer => {
       console.log(`answer value ${answer.value}`);
@@ -91,7 +91,15 @@
     //console.log(answers);
     console.log(result);
     try {
-      postResults(result);
+      let res = await postResults(result);
+      if (res.status == 200) {
+        //redirect to checksheet history page
+        console.log(res.status);
+        //console.log(res.json())
+        navigate(`/checksheets/${id}`);
+      } else {
+        console.log(res);
+      }
     } catch (error) {
       console.log(error);
     }

@@ -1,11 +1,12 @@
 <script>
   import { Button, Form, FormGroup, FormText, Input, Label } from "sveltestrap";
   import { Card, CardBody } from "sveltestrap";
-  //import { postResults } from "../services/services";
+  import { postChecksheet } from "../services/services";
+  import { navigate } from "svelte-routing";
 
-  let title;
-  let frequency;
-  let equipment;
+  let title = "Panwasher monthly PM checks";
+  let frequency = "Monthly";
+  let equipment = "Panwasher";
   let checks = [];
 
   let checkTitle;
@@ -21,6 +22,22 @@
       checks: [...checks]
     };
     console.log(checksheet);
+    try {
+      let response = await postChecksheet(checksheet);
+      console.log(response);
+      if (response.status == 200) {
+        // To check sheetlist
+        console.log(response.status);
+        navigate('/checksheets')
+      } else {
+        //show alert
+        console.log(response.status);
+        console.log(response.statusText);
+        console.log(response.json());
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
   function Addcheck(e) {
     e.preventDefault();
@@ -36,7 +53,7 @@
   }
   function removeCheck(i) {
     checks = checks.filter((check, index) => {
-      index != i ? check : "";
+      return index !== i ? check : "";
     });
   }
 </script>
@@ -103,6 +120,11 @@
 {#each checks as check, i}
   <p>
     {check.title}
-    <Button on:click={removeCheck}>X</Button>
+    <Button
+      on:click={() => {
+        removeCheck(i);
+      }}>
+      X
+    </Button>
   </p>
 {/each}
