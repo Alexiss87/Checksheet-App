@@ -17,12 +17,14 @@
 </script>
 
 <style>
-
+  .bg_color {
+    background-color: #d7dfea;
+  }
 </style>
 
 <Router {url}>
   <Navbar />
-  <Container>
+  <Container classname="bg_color">
     <main>
       <Route path="/" component={Home} />
       <Route path="/checksheets" component={Checksheets} />

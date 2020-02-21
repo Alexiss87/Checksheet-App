@@ -1,13 +1,26 @@
 <script>
   import { Button, Form, FormGroup, FormText, Input, Label } from "sveltestrap";
-  import { Card, CardBody } from "sveltestrap";
+  import {
+    Card,
+    CardBody,
+    ListGroup,
+    ListGroupItem,
+    ButtonGroup
+  } from "sveltestrap";
   import { postChecksheet } from "../services/services";
   import { navigate } from "svelte-routing";
+  import SortableList from "svelte-sortable-list";
 
   let title = "Panwasher monthly PM checks";
   let frequency = "Monthly";
   let equipment = "Panwasher";
-  let checks = [];
+  let checks = [
+    { title: "check panel", has_value: false },
+    { title: "record running current", has_value: true },
+    { title: "inspect safety switches", has_value: false }
+  ];
+
+  $: console.log(checks);
 
   let checkTitle;
   let has_value = false;
@@ -28,7 +41,7 @@
       if (response.status == 200) {
         // To check sheetlist
         console.log(response.status);
-        navigate('/checksheets')
+        navigate("/checksheets");
       } else {
         //show alert
         console.log(response.status);
@@ -38,6 +51,14 @@
     } catch (error) {
       console.log(error);
     }
+  }
+  const sortList = ev => {
+    checks = ev.detail;
+  };
+  function editCheck(index) {
+    checkTitle = checks[index].title;
+    has_value = checks[index].has_value;
+    console.log(`checkTitle: ${checkTitle}, has_value:${has_value}`);
   }
   function Addcheck(e) {
     e.preventDefault();
@@ -51,12 +72,30 @@
     checkTitle = "";
     has_value = false;
   }
-  function removeCheck(i) {
-    checks = checks.filter((check, index) => {
-      return index !== i ? check : "";
-    });
+  function removeCheck(cTitle) {
+    console.log(` ${cTitle} to be deleted`);
+    if (checks.length > 1) {
+      checks = checks.filter((check, index) => {
+        return check.title !== cTitle ? check : "";
+      });
+    } else {
+      checks = [];
+    }
   }
 </script>
+
+<style>
+  .checkbx {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    /* align-items: baseline; */
+  }
+  .rounded {
+    border-radius: 80px !important;
+    width: 50px;
+  }
+</style>
 
 <h1>Build CheckSheet</h1>
 
@@ -97,34 +136,86 @@
       <Form>
         <h5 class="card-title">Add Check to Sheet</h5>
         <FormGroup>
-          <Input
-            type="text"
-            name="check"
-            id="check"
-            bind:value={checkTitle}
-            placeholder="Title of check"
-            readonly={false} />
-          <Input type="checkbox" bind:checked={has_value} readonly={false} />
-          Does this check has a value to be recorded
-          <Button on:click={Addcheck}>Add check</Button>
+          <div>
+            <Input
+              class="mb-3"
+              type="text"
+              name="check"
+              id="check"
+              bind:value={checkTitle}
+              placeholder="Title of check"
+              readonly={false} />
+            <!-- <div class="checkbox"> -->
+            <!-- <label>
+                <input type="checkbox" bind:checked={has_value} />
+                Does this check has a value to be recorded
+              </label> -->
+            <label class="checkbox_container">
+              Does this check has a value to be recorded
+              <input type="checkbox" bind:checked={has_value} />
+              <span class="checkmark" />
+            </label>
+            <!-- </div> -->
+            <!-- <Input
+              class="ml-1 mt-3"
+              type="checkbox"
+              bind:checked={has_value}
+              readonly={false} />
+            <p>Does this check has a value to be recorded</p> -->
+          </div>
+          <Button outline color="primary" class="mt-1" on:click={Addcheck}>
+            Add check
+          </Button>
         </FormGroup>
       </Form>
     </CardBody>
   </Card>
-  <br />
-  <Button type="submit">Submit</Button>
+  <Button class="mb-3 mt-3" outline color="primary" type="submit">
+    Create Checksheet
+  </Button>
 </form>
 
 <h2>List of checks</h2>
 
-{#each checks as check, i}
-  <p>
-    {check.title}
-    <Button
-      on:click={() => {
-        removeCheck(i);
-      }}>
-      X
-    </Button>
-  </p>
-{/each}
+<SortableList list={checks} key="title" let:item let:index on:sort={sortList}>
+  <ListGroup>
+    <ListGroupItem class="d-flex justify-content-between align-items-center">
+      <div>
+        <!-- <p>{index}</p> -->
+        <h4>{item.title}</h4>
+        <p>Possible responses:</p>
+        {#if item.has_value}
+          <span class="badge badge-info badge-pill">To be filled in</span>
+        {:else}
+          <span class="badge badge-success badge-pill">OK</span>
+          <span class="badge badge-danger badge-pill">NOT_OK</span>
+          <span class="badge badge-info badge-pill">JOB_RAISED</span>
+        {/if}
+
+      </div>
+      <ButtonGroup>
+        <Button
+          size="sm"
+          outline
+          color="danger"
+          on:click={() => {
+            removeCheck(item.title);
+          }}>
+          remove
+        </Button>
+        <Button
+          size="sm"
+          outline
+          color="success"
+          on:click={() => {
+            editCheck(index);
+          }}>
+          edit
+        </Button>
+      </ButtonGroup>
+
+    </ListGroupItem>
+  </ListGroup>
+</SortableList>
+<!-- {#each checks as check, i}
+{/each} -->
