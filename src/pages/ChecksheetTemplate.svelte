@@ -7,7 +7,7 @@
   import { onMount, onDestroy } from "svelte";
 
   export let id;
-  let limit = 10;
+  let limit = 100;
   $: sheet = $checksheets.find(item => item.id === parseInt(id));
 
   let results = [];
@@ -21,6 +21,28 @@
   onDestroy(() => {
     results = [];
   });
+
+  function getStatusColor(status) {
+    switch (status) {
+      case "OK":
+        //return "text-success";
+        return "badge-success ";
+        break;
+      case "NOT_OK":
+        return "badge-danger";
+        break;
+      case "UNCHECKED":
+        return "badge-warning";
+        break;
+      case "JOB_RAISED":
+        return "badge-info";
+        break;
+
+      default:
+        return "text-success";
+        break;
+    }
+  }
 </script>
 
 <style>
@@ -127,9 +149,11 @@
           {#each results as result, i}
             {#if result.answers}
               {#if result.answers[idx].value === undefined || result.answers[idx].value === '' || result.answers[idx].value === null}
-                <td>{result.answers[idx].status}</td>
+                <td class={getStatusColor(result.answers[idx].status)}>
+                  {result.answers[idx].status}
+                </td>
               {:else}
-                <td>{result.answers[idx].value}</td>
+                <td class={'text-info'}>{result.answers[idx].value}</td>
               {/if}
             {:else}
               <td>No ans</td>

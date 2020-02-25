@@ -25,9 +25,10 @@
   let date = "2020-02-14";
 
   let statusOptions = [
-    { id: "1", value: "Unchecked" },
-    { id: "2", value: "Ok" },
-    { id: "3", value: "Not Ok" }
+    { id: "1", value: "OK" },
+    { id: "2", value: "NOT_OK" },
+    { id: "3", value: "JOB_RAISED" },
+    { id: "4", value: "UNCHECKED" }
   ];
 
   $: sheet = $checksheets.find(item => item.id === parseInt(id));
@@ -47,7 +48,7 @@
         check: check.id,
         title: check.title,
         status: "Unchecked",
-        value: '',
+        value: "",
         has_value: check.has_value
       };
     });

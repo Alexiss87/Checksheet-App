@@ -12,7 +12,16 @@
   import SortableList from "svelte-sortable-list";
 
   let title = "Panwasher monthly PM checks";
-  let frequency = "Monthly";
+  let frequency = "MONTHLY";
+  let frequencyOptions = [
+    { id: "1", value: "ANNUALLY" },
+    { id: "2", value: "BI-ANNUALLY" },
+    { id: "3", value: "QUARTERLY" },
+    { id: "4", value: "MONTHLY" },
+    { id: "5", value: "BI-WEEKY" },
+    { id: "6", value: "WEEKLY" },
+    { id: "7", value: "DAILY" }
+  ];
   let equipment = "Panwasher";
   let checks = [
     { title: "check panel", has_value: false },
@@ -95,6 +104,65 @@
     border-radius: 80px !important;
     width: 50px;
   }
+
+  /* .slideThree */
+  .slideThree {
+    width: 80px;
+    height: 26px;
+    background: #333;
+    position: relative;
+    margin-top: 15px;
+    margin-bottom: 25px;
+    border-radius: 50px;
+    box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.5),
+      0px 1px 0px rgba(255, 255, 255, 0.2);
+  }
+
+  .slideThree:after {
+    content: "NO";
+    color: #000;
+    color: #dc3545;
+    position: absolute;
+    right: 10px;
+    z-index: 0;
+    font: 12px/26px Arial, sans-serif;
+    font-weight: bold;
+    text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.15);
+  }
+
+  .slideThree:before {
+    content: "YES";
+    color: #28a745;
+    position: absolute;
+    left: 10px;
+    z-index: 0;
+    font: 12px/26px Arial, sans-serif;
+    font-weight: bold;
+  }
+
+  .slideThree label {
+    display: block;
+    width: 34px;
+    height: 20px;
+    cursor: pointer;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    z-index: 1;
+    background: #fcfff4;
+    background: linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+    border-radius: 50px;
+    transition: all 0.4s ease;
+    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.3);
+  }
+
+  .slideThree input[type="checkbox"] {
+    visibility: hidden;
+  }
+
+  .slideThree input:checked + label {
+    left: 43px;
+  }
 </style>
 
 <h1>Build CheckSheet</h1>
@@ -111,16 +179,6 @@
       readonly={false} />
   </FormGroup>
   <FormGroup>
-    <Label for="frequency">Frequency</Label>
-    <Input
-      type="text"
-      name="frequency"
-      id="frequency"
-      bind:value={frequency}
-      placeholder="How often should checks be done"
-      readonly={false} />
-  </FormGroup>
-  <FormGroup>
     <Label for="equipment">Equipment</Label>
     <Input
       type="text"
@@ -130,6 +188,80 @@
       placeholder="The name of the equipment being checked"
       readonly={false} />
   </FormGroup>
+
+  <FormGroup>
+    <Label for="frequency">Frequency</Label>
+    <!-- <Input
+      type="text"
+      name="frequency"
+      id="frequency"
+      bind:value={frequency}
+      placeholder="How often should checks be done"
+      readonly={false} /> -->
+
+    <select
+      class="custom-select"
+      type="select"
+      name="frequency"
+      id="frequency"
+      bind:value={frequency}
+      placeholder="How often should checks be done"
+      readonly={false}>
+      {#each frequencyOptions as option}
+        <option value={option.value} selected={option.value}>
+          {option.value}
+        </option>
+      {/each}
+    </select>
+  </FormGroup>
+
+  {#if checks.length != 0}
+    <h2>List of checks</h2>
+  {/if}
+
+  <SortableList list={checks} key="title" let:item let:index on:sort={sortList}>
+    <ListGroup>
+      <ListGroupItem class="d-flex justify-content-between align-items-center">
+        <div>
+          <!-- <p>{index}</p> -->
+          <h4>{item.title}</h4>
+          <p>Possible responses:</p>
+          {#if item.has_value}
+            <span class="badge badge-success">Text/Number to be filled in</span>
+          {:else}
+            <span class="badge badge-success ">OK</span>
+            <span class="badge badge-danger ">NOT_OK</span>
+            <span class="badge badge-info ">JOB_RAISED</span>
+          {/if}
+
+        </div>
+        <ButtonGroup>
+          <Button
+            type="button"
+            size="sm"
+            outline
+            color="danger"
+            on:click={() => {
+              removeCheck(item.title);
+            }}>
+            remove
+          </Button>
+          <Button
+            type="button"
+            size="sm"
+            outline
+            color="success"
+            on:click={() => {
+              editCheck(index);
+            }}>
+            edit
+          </Button>
+        </ButtonGroup>
+
+      </ListGroupItem>
+    </ListGroup>
+  </SortableList>
+
   <!-- <Label for="equipment">Add Check to Sheet</Label> -->
   <Card>
     <CardBody>
@@ -150,20 +282,28 @@
                 <input type="checkbox" bind:checked={has_value} />
                 Does this check has a value to be recorded
               </label> -->
-            <label class="checkbox_container">
+            <!-- <label class="checkbox_container">
               Does this check has a value to be recorded
               <input type="checkbox" bind:checked={has_value} />
               <span class="checkmark" />
+            </label> -->
+
+            <!-- .slideThree -->
+            <label class="checkbox_container">
+              Does this check has a value to be recorded?
+              <div class="slideThree">
+                <input
+                  type="checkbox"
+                  bind:checked={has_value}
+                  id="slideThree" />
+                <label for="slideThree" />
+              </div>
             </label>
-            <!-- </div> -->
-            <!-- <Input
-              class="ml-1 mt-3"
-              type="checkbox"
-              bind:checked={has_value}
-              readonly={false} />
-            <p>Does this check has a value to be recorded</p> -->
+
+            <!-- end .slideThree -->
+
           </div>
-          <Button outline color="primary" class="mt-1" on:click={Addcheck}>
+          <Button outline color="primary" class="mt-1 mb-1" on:click={Addcheck}>
             Add check
           </Button>
         </FormGroup>
@@ -175,47 +315,5 @@
   </Button>
 </form>
 
-<h2>List of checks</h2>
-
-<SortableList list={checks} key="title" let:item let:index on:sort={sortList}>
-  <ListGroup>
-    <ListGroupItem class="d-flex justify-content-between align-items-center">
-      <div>
-        <!-- <p>{index}</p> -->
-        <h4>{item.title}</h4>
-        <p>Possible responses:</p>
-        {#if item.has_value}
-          <span class="badge badge-info badge-pill">To be filled in</span>
-        {:else}
-          <span class="badge badge-success badge-pill">OK</span>
-          <span class="badge badge-danger badge-pill">NOT_OK</span>
-          <span class="badge badge-info badge-pill">JOB_RAISED</span>
-        {/if}
-
-      </div>
-      <ButtonGroup>
-        <Button
-          size="sm"
-          outline
-          color="danger"
-          on:click={() => {
-            removeCheck(item.title);
-          }}>
-          remove
-        </Button>
-        <Button
-          size="sm"
-          outline
-          color="success"
-          on:click={() => {
-            editCheck(index);
-          }}>
-          edit
-        </Button>
-      </ButtonGroup>
-
-    </ListGroupItem>
-  </ListGroup>
-</SortableList>
 <!-- {#each checks as check, i}
 {/each} -->

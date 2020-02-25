@@ -2,7 +2,6 @@
 .checkbox_container {
   display: block;
   position: relative;
-  padding-left: 35px;
   margin-bottom: 12px;
   cursor: pointer;
   font-size: 22px;
@@ -65,6 +64,9 @@
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
 }
+
+
+/* end .slideThree */
 
 /* html, body {
 	position: relative;
