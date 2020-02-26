@@ -113,11 +113,11 @@
 
 {#if sheet || sheet != undefined}
   <p />
-  <a href="/checksheets" use:link class="btn btn-primary">
+  <a href="/checksheets" use:link class="btn btn-primary light_shadow">
     back to checksheets
   </a>
   <h1>{sheet.Title}</h1>
-  <Form>
+  <Form class="light_shadow p-3 mb-5 rounded" style="background-color:#efefef">
     <FormGroup inline>
       <Col sm="4">
         <Label for="supervisor">Supervisor</Label>
@@ -204,55 +204,67 @@
     </FormGroup>
 
   </Form>
-
-  <Table bordered responsive striped class="table-sm">
-    <thead>
-      <tr>
-        <th />
-        <th>Checks</th>
-        <th>status</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      {#each sheet.checks as check, i}
+  <div class="table-sm light_shadow p-0 mb-3 rounded">
+    <Table
+      bordered
+      responsive
+      striped
+      class="table-sm"
+      style="background-color:#fff">
+      <thead>
         <tr>
-          <th scope="row">{i + 1}</th>
-          <td>{check.title}</td>
-          <td>
-            {#if answers.length != 0}
-              {#if answers.length != 0 && !answers[i].has_value}
-                <select
-                  type="select"
-                  name={check.title}
-                  id={check.title}
-                  bind:value={answers[i].status}
-                  readonly={false}
-                  class="custom-select">
-                  {#each statusOptions as option}
-                    <option value={option.value} selected={option.value}>
-                      {option.value}
-                    </option>
-                  {/each}
-                </select>
-              {:else}
-                <!-- if check has value  -->
-                <Input
-                  type="text"
-                  name={check.title}
-                  bind:value={answers[i].value}
-                  id={check.title}
-                  readonly={false} />
-              {/if}
-            {/if}
-
-          </td>
+          <th />
+          <th>Checks</th>
+          <th>status</th>
         </tr>
-      {/each}
-    </tbody>
+      </thead>
 
-  </Table>
-  <Button type="submit" color={'primary'} block on:click={handleSubmit}>
+      <tbody>
+        {#each sheet.checks as check, i}
+          <tr>
+            <th scope="row">{i + 1}</th>
+            <td>{check.title}</td>
+            <td>
+              {#if answers.length != 0}
+                {#if answers.length != 0 && !answers[i].has_value}
+                  <select
+                    type="select"
+                    name={check.title}
+                    id={check.title}
+                    bind:value={answers[i].status}
+                    readonly={false}
+                    class="custom-select">
+                    {#each statusOptions as option}
+                      <option value={option.value} selected={option.value}>
+                        {option.value}
+                      </option>
+                    {/each}
+                  </select>
+                {:else}
+                  <!-- if check has value  -->
+                  <Input
+                    type="text"
+                    name={check.title}
+                    bind:value={answers[i].value}
+                    id={check.title}
+                    readonly={false} />
+                {/if}
+              {/if}
+
+            </td>
+          </tr>
+        {/each}
+      </tbody>
+
+    </Table>
+  </div>
+
+  <Button
+    type="submit"
+    class="mb-5 light_shadow"
+    color={'primary'}
+    block
+    on:click={handleSubmit}>
     submit
   </Button>
 {:else}

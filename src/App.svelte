@@ -24,7 +24,7 @@
 
 <Router {url}>
   <Navbar />
-  <Container classname="bg_color">
+  <Container class="bg_color">
     <main>
       <Route path="/" component={Home} />
       <Route path="/checksheets" component={Checksheets} />

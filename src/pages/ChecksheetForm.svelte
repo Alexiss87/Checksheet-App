@@ -10,8 +10,9 @@
   import { postChecksheet } from "../services/services";
   import { navigate } from "svelte-routing";
   import SortableList from "svelte-sortable-list";
+  import { onMount } from "svelte";
 
-  let title = "Panwasher monthly PM checks";
+  let title = "";
   let frequency = "MONTHLY";
   let frequencyOptions = [
     { id: "1", value: "ANNUALLY" },
@@ -22,18 +23,21 @@
     { id: "6", value: "WEEKLY" },
     { id: "7", value: "DAILY" }
   ];
-  let equipment = "Panwasher";
+  let equipment = "";
   let checks = [
-    { title: "check panel", has_value: false },
-    { title: "record running current", has_value: true },
-    { title: "inspect safety switches", has_value: false }
+    // { title: "check panel", has_value: false },
+    // { title: "record running current", has_value: true },
+    // { title: "inspect safety switches", has_value: false }
   ];
 
   $: console.log(checks);
 
   let checkTitle;
   let has_value = false;
-
+  onMount(async () => {
+    //does not work implement in on change method of the inputs
+    //title = `${frequency} ${equipment} PM checks`;
+  });
   async function createChecksheet(e) {
     // e.preventDefault();
     // e.stopPropagation();
@@ -168,52 +172,49 @@
 <h1>Build CheckSheet</h1>
 
 <form on:submit|preventDefault={createChecksheet}>
-  <FormGroup>
-    <Label for="title">Title</Label>
-    <Input
-      type="text"
-      name="tile"
-      id="title"
-      bind:value={title}
-      placeholder="Checksheet title"
-      readonly={false} />
-  </FormGroup>
-  <FormGroup>
-    <Label for="equipment">Equipment</Label>
-    <Input
-      type="text"
-      name="Equipment"
-      id="Equipment"
-      bind:value={equipment}
-      placeholder="The name of the equipment being checked"
-      readonly={false} />
-  </FormGroup>
 
-  <FormGroup>
-    <Label for="frequency">Frequency</Label>
-    <!-- <Input
-      type="text"
-      name="frequency"
-      id="frequency"
-      bind:value={frequency}
-      placeholder="How often should checks be done"
-      readonly={false} /> -->
+  <Card class="light_shadow mb-3">
+    <CardBody>
+      <FormGroup>
+        <Label for="title">Title</Label>
+        <Input
+          type="text"
+          name="tile"
+          id="title"
+          bind:value={title}
+          placeholder="Checksheet title"
+          readonly={false} />
+      </FormGroup>
+      <FormGroup>
+        <Label for="equipment">Equipment</Label>
+        <Input
+          type="text"
+          name="Equipment"
+          id="Equipment"
+          bind:value={equipment}
+          placeholder="The name of the equipment being checked"
+          readonly={false} />
+      </FormGroup>
 
-    <select
-      class="custom-select"
-      type="select"
-      name="frequency"
-      id="frequency"
-      bind:value={frequency}
-      placeholder="How often should checks be done"
-      readonly={false}>
-      {#each frequencyOptions as option}
-        <option value={option.value} selected={option.value}>
-          {option.value}
-        </option>
-      {/each}
-    </select>
-  </FormGroup>
+      <FormGroup>
+        <Label for="frequency">Frequency</Label>
+        <select
+          class="custom-select"
+          type="select"
+          name="frequency"
+          id="frequency"
+          bind:value={frequency}
+          placeholder="How often should checks be done"
+          readonly={false}>
+          {#each frequencyOptions as option}
+            <option value={option.value} selected={option.value}>
+              {option.value}
+            </option>
+          {/each}
+        </select>
+      </FormGroup>
+    </CardBody>
+  </Card>
 
   {#if checks.length != 0}
     <h2>List of checks</h2>
@@ -221,7 +222,9 @@
 
   <SortableList list={checks} key="title" let:item let:index on:sort={sortList}>
     <ListGroup>
-      <ListGroupItem class="d-flex justify-content-between align-items-center">
+      <ListGroupItem
+        class="d-flex justify-content-between align-items-center light_shadow
+        mb-2">
         <div>
           <!-- <p>{index}</p> -->
           <h4>{item.title}</h4>
@@ -263,7 +266,7 @@
   </SortableList>
 
   <!-- <Label for="equipment">Add Check to Sheet</Label> -->
-  <Card>
+  <Card class="light_shadow mb-3">
     <CardBody>
       <Form>
         <h5 class="card-title">Add Check to Sheet</h5>
@@ -310,7 +313,7 @@
       </Form>
     </CardBody>
   </Card>
-  <Button class="mb-3 mt-3" outline color="primary" type="submit">
+  <Button class="mb-5 mt-3 light_shadow" outline color="primary" type="submit">
     Create Checksheet
   </Button>
 </form>

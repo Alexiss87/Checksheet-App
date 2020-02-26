@@ -6,7 +6,9 @@
   export let title = "defualt title";
 </script>
 
-<Card class="mx-auto text-center" style="margin-top:10px;">
+<Card
+  class="mx-auto text-center light_shadow p-3 mb-5 rounded"
+  style="margin-top:10px; ">
   <CardBody class="justify-content-center">
     <CardTitle>{title}</CardTitle>
     <a
