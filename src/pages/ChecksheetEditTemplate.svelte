@@ -11,7 +11,15 @@
     Label,
     Spinner
   } from "sveltestrap";
-  import { Col, Container, Row, Table } from "sveltestrap";
+  import {
+    Col,
+    Container,
+    Row,
+    Table,
+    Card,
+    CardBody,
+    CardTitle
+  } from "sveltestrap";
   import { getChecks } from "../services/services";
   import { onMount, onDestroy } from "svelte";
   import { postResults } from "../services/services";
@@ -117,64 +125,67 @@
     back to checksheets
   </a>
   <h1>{sheet.Title}</h1>
-  <Form class="light_shadow p-3 mb-5 rounded" style="background-color:#efefef">
-    <FormGroup inline>
-      <Col sm="4">
-        <Label for="supervisor">Supervisor</Label>
-      </Col>
-      <Col sm="12">
-        <Input
-          type="text"
-          name="supervisor"
-          id="supervisor"
-          bind:value={supervisor}
-          readonly={false} />
-      </Col>
-    </FormGroup>
+  <Card class="light_shadow mb-3 p-4 rounded">
+    <Form>
+      <FormGroup inline>
+        <Col sm="4">
+          <Label for="supervisor">Supervisor</Label>
+        </Col>
+        <Col sm="12">
+          <Input
+            type="text"
+            name="supervisor"
+            id="supervisor"
+            bind:value={supervisor}
+            readonly={false} />
+        </Col>
+      </FormGroup>
 
-    <FormGroup inline>
-      <Col sm="4">
-        <Label for="technician">Technician</Label>
-      </Col>
-      <Col sm="12">
-        <Input
-          type="text"
-          name="Technician"
-          id="technician"
-          bind:value={technician}
-          readonly={false} />
-      </Col>
-    </FormGroup>
+      <FormGroup inline>
+        <Col sm="4">
+          <Label for="technician">Technician</Label>
+        </Col>
+        <Col sm="12">
+          <Input
+            type="text"
+            name="Technician"
+            id="technician"
+            bind:value={technician}
+            readonly={false} />
+        </Col>
+      </FormGroup>
 
-    <FormGroup inline>
-      <Col sm="4">
-        <Label for="start_time" class="text-nowrap">Start time</Label>
-      </Col>
-      <Col sm="12">
-        <Input
-          type="time"
-          name="start_time"
-          id="start_time"
-          bind:value={start_time}
-          readonly={false} />
-      </Col>
-    </FormGroup>
+      <FormGroup inline>
+        <Col sm="4">
+          <Label for="start_time" class="text-nowrap">Start time</Label>
+        </Col>
+        <Col sm="12">
+          <Input
+            type="time"
+            name="start_time"
+            id="start_time"
+            bind:value={start_time}
+            readonly={false} />
+        </Col>
+      </FormGroup>
 
-    <FormGroup inline>
-      <Col sm="4">
-        <Label for="completion_time" class="text-nowrap">Completion time</Label>
-      </Col>
-      <Col sm="12">
-        <Input
-          type="time"
-          name="completion_time"
-          id="completion_time"
-          bind:value={completion_time}
-          readonly={false} />
-      </Col>
-    </FormGroup>
+      <FormGroup inline>
+        <Col sm="4">
+          <Label for="completion_time" class="text-nowrap">
+            Completion time
+          </Label>
+        </Col>
+        <Col sm="12">
+          <Input
+            type="time"
+            name="completion_time"
+            id="completion_time"
+            bind:value={completion_time}
+            readonly={false} />
+        </Col>
+      </FormGroup>
 
-    <!-- <FormGroup inline>
+      <!-- <FormGroup inline>
     <Col sm="3">
       <Label for="time_taken" class="text-nowrap">Time Taken</Label>
     </Col>
@@ -189,28 +200,24 @@
     </Col>
   </FormGroup> -->
 
-    <FormGroup inline>
-      <Col sm="4">
-        <Label for="date">Date</Label>
-      </Col>
-      <Col sm="12">
-        <Input
-          type="date"
-          name="date"
-          id="date"
-          bind:value={date}
-          readonly={false} />
-      </Col>
-    </FormGroup>
+      <FormGroup inline>
+        <Col sm="4">
+          <Label for="date">Date</Label>
+        </Col>
+        <Col sm="12">
+          <Input
+            type="date"
+            name="date"
+            id="date"
+            bind:value={date}
+            readonly={false} />
+        </Col>
+      </FormGroup>
 
-  </Form>
-  <div class="table-sm light_shadow p-0 mb-3 rounded">
-    <Table
-      bordered
-      responsive
-      striped
-      class="table-sm"
-      style="background-color:#fff">
+    </Form>
+  </Card>
+  <Card class="light_shadow p-0 mb-3 rounded">
+    <Table bordered responsive striped class="table-sm rounded">
       <thead>
         <tr>
           <th />
@@ -257,16 +264,16 @@
       </tbody>
 
     </Table>
-  </div>
-
-  <Button
-    type="submit"
-    class="mb-5 light_shadow"
-    color={'primary'}
-    block
-    on:click={handleSubmit}>
-    submit
-  </Button>
+    <Button
+      type="submit"
+      class="mb-0 light_shadow"
+      color={'primary'}
+      block
+      outline={true}
+      on:click={handleSubmit}>
+      submit
+    </Button>
+  </Card>
 {:else}
   <!-- else content here -->
   <div class="d-flex justify-content-center text-center align-items-center m-5">

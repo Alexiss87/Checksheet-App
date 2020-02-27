@@ -2,20 +2,40 @@
   //import localSheets from "../localSheets.js";
   import checksheets from "../stores/checksheets";
   import { link } from "svelte-routing";
-  import { Table, Spinner } from "sveltestrap";
+  import { Table, Spinner, Card, CardBody } from "sveltestrap";
   import { getResults } from "../services/services";
-  import { onMount, onDestroy } from "svelte";
+  import { onMount, onDestroy, onLoad } from "svelte";
 
   export let id;
   let limit = 100;
   $: sheet = $checksheets.find(item => item.id === parseInt(id));
 
   let results = [];
+  let answers = [];
   onMount(async () => {
-    results = await getResults(`?checksheet=${id}`);
-    //console.log("**********");
-    console.log(results);
-    console.log(sheet);
+    try {
+      results = await getResults(`?checksheet=${id}`);
+      // answers = await results[4].answers.sort((a, b) => {
+      //   return a.check - b.check;
+      // });
+      // sort the answers in each result object by check (check id)
+      //because they are listed in the table by check id
+      // for (let index = 0; index < results.length; index++) {
+      //   results[index].answers = await results[index].answers.sort((a, b) => {
+      //     return a.check - b.check;
+      //   });
+      // }
+      results.forEach(async result => {
+        result.answers = await result.answers.sort((a, b) => {
+          return a.check - b.check;
+        });
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    console.log({ results });
+    console.table(answers);
+    //console.log(sheet);
   });
 
   onDestroy(() => {
@@ -75,7 +95,7 @@
   </a>
   <br />
   <br />
-  <div class="table-sm light_shadow p-0 mb-3 rounded">
+  <Card class="light_shadow p-0 mb-3 rounded">
     <Table
       style="position:relative;text-align:left;background-color:#fff"
       bordered
@@ -150,6 +170,7 @@
             <th scope="row">{idx + 1}</th>
             <td>{check.title}</td>
             <!-- each check has a list/array of results -->
+            <!-- And each result has an array of answers -->
             {#each results as result, i}
               {#if result.answers}
                 {#if result.answers[idx].value === undefined || result.answers[idx].value === '' || result.answers[idx].value === null}
@@ -167,7 +188,7 @@
         {/each}
       </tbody>
     </Table>
-  </div>
+  </Card>
 {:else}
   <div
     class="d-flex flex-row justify-content-center text-center m-5 flex-center">
