@@ -132,7 +132,7 @@
     </CardBody>
   </Card>
 
-  {#if checks.length != 0}
+  {#if checks.length !== 0}
     <h2>List of checks</h2>
   {/if}
   <CheckListItem {checks} />
