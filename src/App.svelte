@@ -7,8 +7,8 @@
   import Home from "./pages/Home.svelte";
   import About from "./pages/About.svelte";
   import Checksheets from "./pages/Checksheets.svelte";
-  import ChecksheetTemplate from "./pages/ChecksheetTemplate.svelte";
-  import ChecksheetEditTemplate from "./pages/ChecksheetEditTemplate.svelte";
+  import ChecksheetHistory from "./pages/ChecksheetHistory.svelte";
+  import ChecksheetInspection from "./pages/ChecksheetInspection.svelte";
   import ChecksheetForm from "./pages/ChecksheetForm.svelte";
 
   import { Col, Container, Row } from "sveltestrap";
@@ -28,8 +28,8 @@
     <main>
       <Route path="/" component={Home} />
       <Route path="/checksheets" component={Checksheets} />
-      <Route path="/checksheets/:id" component={ChecksheetTemplate} />
-      <Route path="/checksheets/:id/edit" component={ChecksheetEditTemplate} />
+      <Route path="/checksheets/:id/history" component={ChecksheetHistory} />
+      <Route path="/checksheets/:id/inspect" component={ChecksheetInspection} />
       <Route path="/build" component={ChecksheetForm} />
       <Route path="/about" component={About} />
     </main>

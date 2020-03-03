@@ -15,6 +15,7 @@
   onMount(async () => {
     try {
       results = await getResults(`?checksheet=${id}`);
+      console.log({ results });
       // answers = await results[4].answers.sort((a, b) => {
       //   return a.check - b.check;
       // });
@@ -34,7 +35,7 @@
       console.log(error);
     }
     console.log({ results });
-    console.table(answers);
+    //console.table(answers);
     //console.log(sheet);
   });
 

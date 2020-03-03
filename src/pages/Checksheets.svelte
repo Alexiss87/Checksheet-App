@@ -3,7 +3,7 @@
   import checksheets from "../stores/checksheets";
   import SheetList from "../components/SheetList.svelte";
 
-  import ListItem from "../components/ListItem.svelte";
+  //import ChecksheetListItem from "../components/ChecksheetListItem.svelte";
   import { Col, Row } from "sveltestrap";
   import { get } from "svelte/store";
 
