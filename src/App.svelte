@@ -11,6 +11,7 @@
   import ChecksheetInspection from "./pages/ChecksheetInspection.svelte";
   import ChecksheetEditForm from "./pages/ChecksheetEditForm.svelte";
   import ChecksheetForm from "./pages/ChecksheetForm.svelte";
+  import InspectionDetail from "./pages/InspectionDetail.svelte";
 
   import { Col, Container, Row } from "sveltestrap";
 
@@ -31,6 +32,7 @@
       <Route path="/checksheets" component={Checksheets} />
       <Route path="/checksheets/:id/" component={ChecksheetEditForm} />
       <Route path="/checksheets/:id/history" component={ChecksheetHistory} />
+      <Route path="/checksheets/:id/history/:id" component={InspectionDetail} />
       <Route path="/checksheets/:id/inspect" component={ChecksheetInspection} />
       <Route path="/build" component={ChecksheetForm} />
       <Route path="/about" component={About} />

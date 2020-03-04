@@ -5,6 +5,7 @@
   import { Table, Spinner, Card, CardBody } from "sveltestrap";
   import { getResults } from "../services/services";
   import { onMount, onDestroy, onLoad } from "svelte";
+  import moment from "moment";
 
   export let id;
   let limit = 100;
@@ -15,7 +16,7 @@
   onMount(async () => {
     try {
       results = await getResults(`?checksheet=${id}`);
-      console.log({ results });
+      //console.log({ results });
       // answers = await results[4].answers.sort((a, b) => {
       //   return a.check - b.check;
       // });
@@ -34,7 +35,7 @@
     } catch (error) {
       console.log(error);
     }
-    console.log({ results });
+    //console.log({ results });
     //console.table(answers);
     //console.log(sheet);
   });
@@ -159,7 +160,14 @@
           <th>Checks</th>
           {#each results as response, i}
             {#if i < limit - 1}
-              <th>{response.date}</th>
+              <th>
+                <a
+                  href={`/checksheets/${id}/history/${response.id}`}
+                  class="btn btn-outline-primary"
+                  use:link>
+                  {moment(response.date).format('L')}
+                </a>
+              </th>
             {/if}
           {/each}
         </tr>

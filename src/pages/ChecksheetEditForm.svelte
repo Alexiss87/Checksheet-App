@@ -147,12 +147,8 @@
     <CheckListItem {checks} />
     <AddCheckForm on:addCheck={addcheck} {checkTitle} {has_value} />
 
-    <Button
-      class="mb-5 mt-3 light_shadow"
-      outline
-      color="primary"
-      type="submit">
-      Create Checksheet
+    <Button class="mb-5 mt-3 light_shadow" outline color="danger" type="submit">
+      Edit Checksheet
     </Button>
   </form>
 {:else}

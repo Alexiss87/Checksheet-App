@@ -105,7 +105,7 @@
         //redirect to checksheet history page
         console.log(res.status);
         //console.log(res.json())
-        navigate(`/checksheets/${id}`);
+        navigate(`/checksheets/${id}/history`);
       } else {
         console.log(res);
       }

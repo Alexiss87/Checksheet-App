@@ -20,7 +20,7 @@
 </script>
 
 <Navbar color="primary" dark expand="md">
-  <NavbarBrand href="/">CheckSheet App</NavbarBrand>
+  <NavbarBrand href="/">CheckApp</NavbarBrand>
   <!-- <a class="navbar-brand" href="#">Navbar</a> -->
   <NavbarToggler on:click={() => (isOpen = !isOpen)} />
   <Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>

@@ -22,7 +22,7 @@ add line through to the checks once they have been checked on ChecksheetEditTemp
 
 rename some the pages to something that makes more sense, list checksheet to checksheet history
 
-add results/inspection/audit overview page
+add results/inspection/audit detail page
 
 add checksheet edit page to edit sheets that were created 
 
