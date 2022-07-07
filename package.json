@@ -16,7 +16,7 @@
     "svelte": "^3.17.1"
   },
   "dependencies": {
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "sirv-cli": "^0.4.4",
     "svelte-routing": "^1.4.0",
     "svelte-sortable-list": "^1.1.0",
